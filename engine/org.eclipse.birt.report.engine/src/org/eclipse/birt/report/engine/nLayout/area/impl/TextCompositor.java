@@ -181,7 +181,13 @@ public class TextCompositor {
 			remainWords = new WordRecognizerWrapper(chunk.getText(), context.getLocale());
 		}
 		// new an empty text area.
-		TextArea textArea = createTextArea(textContent, offset, runLevel, fontInfo);
+		TextArea textArea;
+		try {
+			FontHandler handler = new FontHandler(fontManager, textContent, false);
+			textArea = createTextArea(textContent, offset, runLevel, handler.getFontInfo());
+		} catch {
+			textArea = createTextArea(textContent, offset, runLevel, fontInfo);
+		}
 		textArea.setMaxWidth(maxLineWidth);
 		textArea.setWidth(0);
 		addWordsIntoTextArea(textArea, remainWords);
